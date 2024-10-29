@@ -1,0 +1,26 @@
+[
+    [
+        "system",
+        "As an expert doctor in clinical science and medical knowledge, can you tell me if the following statement is correct? Answer 'yes', 'no', or 'maybe'. Your final answer should be wrapped in '```'. (Tip: We recommend choosing 'maybe' only when there is a clear lack of information and it is not possible to make a reasonably high probability answer. If there is no particular reason, it is probably better to choose between 'yes' and 'no'.)"
+    ],
+    [
+        "user",
+        "### Question\nAre group 2 innate lymphoid cells ( ILC2s ) increased in chronic rhinosinusitis with nasal polyps or eosinophilia?\n\n### Context\nBACKGROUND: Chronic rhinosinusitis (CRS) is a heterogeneous disease with an uncertain pathogenesis. Group 2 innate lymphoid cells (ILC2s) represent a recently discovered cell population which has been implicated in driving Th2 inflammation in CRS; however, their relationship with clinical disease characteristics has yet to be investigated.\nOBJECTIVE: The aim of this study was to identify ILC2s in sinus mucosa in patients with CRS and controls and compare ILC2s across characteristics of disease.\nMETHODS: A cross-sectional study of patients with CRS undergoing endoscopic sinus surgery was conducted. Sinus mucosal biopsies were obtained during surgery and control tissue from patients undergoing pituitary tumour resection through transphenoidal approach. ILC2s were identified as CD45(+) Lin(-) CD127(+) CD4(-) CD8(-) CRTH2(CD294)(+) CD161(+) cells in single cell suspensions through flow cytometry. ILC2 frequencies, measured as a percentage of CD45(+) cells, were compared across CRS phenotype, endotype, inflammatory CRS subtype and other disease characteristics including blood eosinophils, serum IgE, asthma status and nasal symptom score.\nRESULTS: 35 patients (40% female, age 48 ± 17 years) including 13 with eosinophilic CRS (eCRS), 13 with non-eCRS and 9 controls were recruited. ILC2 frequencies were associated with the presence of nasal polyps (P = 0.002) as well as high tissue eosinophilia (P = 0.004) and eosinophil-dominant CRS (P = 0.001) (Mann-Whitney U). They were also associated with increased blood eosinophilia (P = 0.005). There were no significant associations found between ILC2s and serum total IgE and allergic disease. In the CRS with nasal polyps (CRSwNP) population, ILC2s were increased in patients with co-existing asthma (P = 0.03). ILC2s were also correlated with worsening nasal symptom score in CRS (P = 0.04)."
+    ],
+    [
+        "assistant",
+        "Based on the context provided, the statement is correct: group 2 innate lymphoid cells (ILC2s) are increased in chronic rhinosinusitis with nasal polyps and eosinophilia.\n\n### Answer\n```yes```"
+    ],
+    [
+        "user",
+        "### Question\nAre lipoprotein phospholipase A2 mass and activity associated with the diagnosis of acute brain ischemia?\n\n### Context\nBACKGROUND: Elevated lipoprotein-associated phospholipase A2 (Lp-PLA2) levels are associated with both coronary artery and cerebrovascular diseases. The clinical diagnosis of neurovascular events, specifically transient ischemic attack can be challenging, although there is disagreement among vascular trained neurologists regarding this. Currently, there is no single accurate biomarker for the diagnosis of acute brain ischemia.\nOBJECTIVE: We studied the relationship between Lp-PLA2 mass and activity levels and the diagnosis of acute brain ischemia in the acute phase among patients evaluated in the emergency department following transient focal neurological symptoms\nMETHODS: Patients evaluated in our academic center for transient neurological symptoms of possible ischemic mechanism were enrolled with informed consent. Lp-PLA2 mass and activity levels were performed by DiaDexus, Inc.\nRESULTS: 100 patients were enrolled: 58 were ischemic (30 stroke, 28 TIA), 10 were unknown, and 28 were non-ischemic. Blood samples were collected after a median delay of 23 h (IQR: 17, 36) after symptom onset. The median levels of Lp-PLA2 activity level for ischemic (stroke and TIA) versus non-ischemic events were 186.5 nmol/ml/min (IQR = 153, 216.3) and 169 nmol/ml/min (IQR = 137, 212.5), respectively. The median levels of Lp-PLA2 mass level for ischemic versus non-ischemic events were 202 ng/ml (IQR = 171.6, 226.1) and 192 ng/ml (167.8, 230). The differences in median Lp-PLA2 mass and activity levels were not statistically significant in the ischemic versus non-ischemic patients. Vessel imaging revealed a symptomatic stenosis in 14 patients (10 intracranial and 4 cervical). The median Lp-PLA2 mass and activity levels among patients with a symptomatic stenosis were not significantly higher than the levels measured in TIA/stroke patients without stenosis."
+    ],
+    [
+        "assistant",
+        "Based on the context, the statement is not correct: lipoprotein phospholipase A2 (Lp-PLA2) mass and activity are not significantly associated with the diagnosis of acute brain ischemia.\n\n### Answer\n```no```"
+    ],
+    [
+        "user",
+        "### Question\n{question}\n\n### Context\n{context}"
+    ]
+]

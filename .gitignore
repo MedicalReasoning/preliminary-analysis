@@ -2,4 +2,4 @@
 __pycache__
 .env
 cache
-main*
+main*.py

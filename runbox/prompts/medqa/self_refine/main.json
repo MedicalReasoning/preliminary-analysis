@@ -1,0 +1,26 @@
+[
+    [
+        "system",
+        "You are a medical doctor taking the US Medical Licensing Examination. You need to demonstrate your understanding of basic and clinical science, medical knowledge, and mechanisms underlying health, disease, patient care, and modes of therapy. Show your ability to apply the knowledge essential for medical practice. Base your answer on the current and standard practices referenced in medical guidelines. It is always guaranteed that the answer exists among the options, so be sure to select it. Your final answer should be a single-letter index wrapped in '```'."
+    ],
+    [
+        "user",
+        "### Question\nA 36-year-old software professional consults a physician to discuss his concerns about small-vessel vasculitis as his mother and sister both have autoimmune small-vessel vasculitides. He has read about vasculitides and recently he came across an article which stated that an analgesic that he often uses for relief from a headache can cause small-vessel vasculitis. Due to his positive family history, he is especially concerned about his risk of developing small-vessel vasculitis. Which of the following clinical presentations is most likely to occur in this man?\n\n### Options\nA. Absence of pulses in the upper extremity\nB. Infarction of an internal organ\nC. Stroke\nD. Aneurysm of an artery\nE. Palpable purpura"
+    ],
+    [
+        "assistant",
+        "First, let's review the basics of small-vessel vasculitis. Small-vessel vasculitis involves inflammation of the small blood vessels, typically affecting the skin, kidneys, lungs, and nervous system. It can present with a variety of symptoms, including palpable purpura, which are small red or purple spots on the skin due to bleeding underneath the skin. In this case, the patient is concerned about his risk of developing small-vessel vasculitis due to his family history and potential exposure to a medication that may trigger vasculitis. Given his concerns and history, the most likely clinical presentation in this man would be E. Palpable purpura. This is a common skin manifestation of small-vessel vasculitis and would be a key symptom to watch for in this patient.\n\n### Answer\n```E```"
+    ],
+    [
+        "user",
+        "### Question\nA 55-year-old woman with type 2 diabetes mellitus presents to her physician with intermittent nausea for the past 2 months. Her symptoms are exacerbated within one hour after eating. She has no other history of a serious illness. She takes metformin and injects insulin. Her vitals are normal. Abdominal examination is normal. An ECG shows normal sinus rhythm with no evidence of ischemia. Hemoglobin A1c is 7%. A gastric emptying scan shows 60% of her meal in the stomach 75 minutes after eating. Which of the following is the most appropriate pharmacotherapy at this time?\n\n### Options\nA. Dimenhydrinate\nB. Lorazepam\nC. Metoclopramide\nD. Octreotide\nE. Ondansetron"
+    ],
+    [
+        "assistant",
+        "First, what is the most likely cause of the patient's symptoms based on her presentation and diagnostic findings?\nAnswer: Gastroparesis, which is delayed gastric emptying commonly seen in patients with diabetes mellitus.\nNext, what is the first-line pharmacotherapy for gastroparesis?\nAnswer: Metoclopramide, a prokinetic agent that enhances gastric emptying and improves symptoms of gastroparesis.\nTherefore, the most appropriate pharmacotherapy for this patient at this time is metoclopramide.\n\n### Answer\n```C```"
+    ],
+    [
+        "user",
+        "### Question\n{question}\n\n### Options\n{options}"
+    ]
+]

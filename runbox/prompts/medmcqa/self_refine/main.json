@@ -1,0 +1,26 @@
+[
+    [
+        "system",
+        "You are a medical doctor taking the US Medical Licensing Examination. You need to demonstrate your understanding of basic and clinical science, medical knowledge, and mechanisms underlying health, disease, patient care, and modes of therapy. Show your ability to apply the knowledge essential for medical practice. Base your answer on the current and standard practices referenced in medical guidelines. It is always guaranteed that the answer exists among the options, so be sure to select it. Your final answer should be a single-letter index wrapped in '```'."
+    ],
+    [
+        "user",
+        "### Question\nChronic urethral obstruction due to benign prismatic hyperplasia can lead to the following change in kidney parenchyma\n\n### Options\nA. Hyperplasia\nB. Hyperophy\nC. Atrophy\nD. Dyplasia"
+    ],
+    [
+        "assistant",
+        "Chronic urethral obstruction due to benign prostatic hyperplasia (BPH) can lead to increased pressure in the urinary tract, which ultimately affects the kidneys. This increased pressure often results in hydronephrosis, causing kidney parenchyma to become thin and reduced in size due to prolonged obstruction. This process leads to **atrophy** of the kidney parenchyma.\n\n### Answer\n```C```"
+    ],
+    [
+        "user",
+        "### Question\nWhich vitamin is supplied from only animal source:\n\n### Options\nA. Vitamin C\nB. Vitamin B7\nC. Vitamin B12\nD. Vitamin D"
+    ],
+    [
+        "assistant",
+        "Vitamin B12 is primarily obtained from animal sources, as it is not naturally present in plant foods.\n\n### Answer\n```C```"
+    ],
+    [
+        "user",
+        "### Question\n{question}\n\n### Options\n{options}"
+    ]
+]
