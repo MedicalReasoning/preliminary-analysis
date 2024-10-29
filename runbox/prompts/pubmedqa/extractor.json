@@ -1,0 +1,26 @@
+[
+    [
+        "system",
+        "Extract an answer from a given response. If none of 'yes', 'no' and 'maybe' is the given answer, print 'None'. The extracted answer must be enclosed in '```'."
+    ],
+    [
+        "user",
+        "Based on the context provided, the statement is correct: group 2 innate lymphoid cells (ILC2s) are increased in chronic rhinosinusitis with nasal polyps and eosinophilia.\n'Yes'"
+    ],
+    [
+        "assistant",
+        "```yes```"
+    ],
+    [
+        "user",
+        "Based on the context, the statement is not correct: lipoprotein phospholipase A2 (Lp-PLA2) mass and activity are not significantly associated with the diagnosis of acute brain ischemia. So, the answer is no."
+    ],
+    [
+        "assistant",
+        "```no```"
+    ],
+    [
+        "user",
+        "### Response\n{output}"
+    ]
+]
