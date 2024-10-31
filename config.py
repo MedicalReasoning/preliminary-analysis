@@ -78,7 +78,12 @@ def model_configs(model: str) -> ChatOpenAIConfig:
             "model": "epfl-llm/meditron-70b",
             "temperature": 0,
             "base_url": os.environ["MEDITRON_70B_BASE_URL"]
-        }
+        },
+        "llama_8b": {
+            "model": "meta-llama/Llama-3.1-8B",
+            "temperature": 0,
+            "base_url": os.environ["LLAMA_8B_BASE_URL"]
+        },
     }[model]
 
 def prepare(
