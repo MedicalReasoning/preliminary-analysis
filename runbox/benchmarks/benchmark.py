@@ -12,13 +12,8 @@ def __validate_split(split: str) -> bool:
         and "[" not in split\
         and "]" not in split
 
-def __validate_slice(slice: tuple[int, int]) -> bool:
-    return 0 <= slice[0] <= 100\
-        and 0 <= slice[1] <= 100\
-        and slice[0] <= slice[1]
-
 def __apply_slice(split: str, slice: tuple[int, int]) -> str:
-    return split + f"[{slice[0]}%:{slice[1]}%]"
+    return split + f"[{slice[0]}:{slice[1]}]"
 
 def _load_dataset(
     *args,
@@ -29,7 +24,6 @@ def _load_dataset(
     assert __validate_split(split), "`split` must be without combining or slicing."
 
     if slice is not None:
-        assert __validate_slice(slice), "Invalid `slice`. Are you sure the value is based on an integer percentage?"
         split = __apply_slice(split, slice)
 
     return load_dataset(
