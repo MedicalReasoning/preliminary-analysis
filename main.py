@@ -100,13 +100,18 @@ def run_single_config(
         results.append(result)
         result_indexes.append((*result[0], i))
     sorted_indexes = [*map(lambda x: x[2], sorted(result_indexes))]
-    results_ = [*map(lambda i: results[i], sorted_indexes)]
+
+    print("queue done")
 
     for p in processes:
         p.join()
 
-    full: list[dict] = sum([*map(lambda x: x[1], results_)], [])
+    print("join done")
+
+    full: list[dict] = sum([*map(lambda i: results[i][1], sorted_indexes)], [])
     full_score = calc_full_score(config, [*map(lambda x: x["result"], full)])
+
+    print("score done")
 
     save_results(
         config,
@@ -116,6 +121,8 @@ def run_single_config(
             "generations": full
         }
     )
+
+    print("save done")
 
 def load_queue(path: str) -> list[RunConfig]:
     queue: list[RunConfig] = json.load(open(path, "r"))
