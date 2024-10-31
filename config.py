@@ -75,7 +75,7 @@ def model_configs(model: str) -> ChatOpenAIConfig:
             "stop": "<|eot_id|>"
         },
         "meditron_70b": {
-            "model": "epfl-llm/meditron-70b",
+            "model": "zechen-nlp/meditron-70b-v2-instruct",
             "temperature": 0,
             "base_url": os.environ["MEDITRON_70B_BASE_URL"]
         },
