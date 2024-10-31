@@ -97,7 +97,7 @@ def run_single_config(
     results: list[tuple[tuple[int, int], list[dict]]] = []
     for _ in processes:
         results.append(queue.get())
-    results_ = sorted(results)
+    results_ = sorted(results,  key=lambda x: x[0])
 
     for p in processes:
         p.join()
