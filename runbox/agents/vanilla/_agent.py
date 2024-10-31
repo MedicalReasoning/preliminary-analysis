@@ -11,7 +11,7 @@ _BenchInput = TypeVar("_BenchInput", bound=Mapping[str, Any])
 _BenchOutput = TypeVar("_BenchOutput")
 _BenchEvalResult = TypeVar("_BenchEvalResult")
 
-VanillaRowResult = _BenchEvalResult
+type VanillaRowResult = _BenchEvalResult
 
 class VanillaAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
     SupportsBenchmark[_BenchInput, _BenchOutput, _BenchEvalResult, VanillaRowResult]

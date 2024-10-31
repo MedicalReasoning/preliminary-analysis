@@ -55,12 +55,13 @@ class Benchmark(
         **kwargs,
     ) -> None:
         self._dataset = _load_dataset(*args, split=split, slice=slice, **kwargs)
+        self._desc = str(slice) if slice is not None else None
 
     def __len__(self) -> int:
         return len(self._dataset)
 
     def __iter__(self) -> Iterator[_PreprocessedRow]:
-        for row in tqdm(self._dataset):
+        for row in tqdm(self._dataset, desc=self._desc):
             yield self.preprocess_row(row) # type: ignore
 
     @abstractmethod

@@ -1,11 +1,12 @@
 from typing import TypedDict, Any
 import json
 import argparse
-from multiprocessing import Pipe, Process
+from multiprocessing import Queue, Process
 from multiprocessing.connection import Connection
 from pathlib import Path
 
 from tqdm import tqdm
+from dotenv import load_dotenv # type: ignore
 # from langchain_community.callbacks import get_openai_callback
 
 from config import prepare
@@ -35,7 +36,7 @@ def generate_chunks(slice: tuple[int, int], n_process: int) -> list[tuple[int, i
     return chunks
 
 def run_single_chunk(
-    send_end: Connection,
+    queue: Queue,
     config: RunConfig,
     chunk: tuple[int, int]
 ) -> None:
@@ -59,7 +60,7 @@ def run_single_chunk(
             "result": result
         })
 
-    send_end.send(results)
+    queue.put((chunk, results))
 
 def calc_full_score(
     config: RunConfig,
@@ -86,19 +87,23 @@ def run_single_config(
     chunks = generate_chunks(config["bench_config"]["slice"], n_process)
 
     processes: list[Process] = []
-    recvs: list[Connection] = []
+    queue = Queue()
 
     for chunk in chunks:
-        recv_end, send_end = Pipe(False)
-        p = Process(target=run_single_chunk, args=(send_end, config, chunk))
+        p = Process(target=run_single_chunk, args=(queue, config, chunk))
         processes.append(p)
         p.start()
+
+    results: list[tuple[tuple[int, int], list[dict]]] = []
+    for _ in processes:
+        results.append(queue.get())
+    results_ = sorted(results)
 
     for p in processes:
         p.join()
 
-    full: list[dict] = sum([x.recv() for x in recvs], [])
-    full_score = calc_full_score(config, full)
+    full: list[dict] = sum([*map(lambda x: x[1], results_)], [])
+    full_score = calc_full_score(config, [*map(lambda x: x["result"], full)])
 
     save_results(
         config,
@@ -132,3 +137,7 @@ def main() -> None:
 
     for config in tqdm(queue, desc="configs"):
         run_single_config(config, n_process, result_dir_path)
+
+if __name__ == "__main__":
+    load_dotenv()
+    main()
