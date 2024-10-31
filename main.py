@@ -94,24 +94,12 @@ def run_single_config(
         p.start()
 
     results: list[tuple[tuple[int, int], list[dict]]] = []
-    result_indexes: list[tuple[int, int, int]] = []
-    for i, _ in enumerate(processes):
-        result = queue.get()
-        results.append(result)
-        result_indexes.append((*result[0], i))
-    sorted_indexes = [*map(lambda x: x[2], sorted(result_indexes))]
+    for _ in processes:
+        results.append(queue.get())
+    results_ = sorted(results)
 
-    print("queue done")
-
-    for p in processes:
-        p.join()
-
-    print("join done")
-
-    full: list[dict] = sum([*map(lambda i: results[i][1], sorted_indexes)], [])
+    full: list[dict] = sum([*map(lambda x: x[1], results_)], [])
     full_score = calc_full_score(config, [*map(lambda x: x["result"], full)])
-
-    print("score done")
 
     save_results(
         config,
@@ -121,8 +109,6 @@ def run_single_config(
             "generations": full
         }
     )
-
-    print("save done")
 
 def load_queue(path: str) -> list[RunConfig]:
     queue: list[RunConfig] = json.load(open(path, "r"))
