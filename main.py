@@ -2,7 +2,6 @@ from typing import TypedDict, Any
 import json
 import argparse
 from multiprocessing import Queue, Process
-from multiprocessing.connection import Connection
 from pathlib import Path
 
 from tqdm import tqdm
@@ -95,9 +94,13 @@ def run_single_config(
         p.start()
 
     results: list[tuple[tuple[int, int], list[dict]]] = []
-    for _ in processes:
-        results.append(queue.get())
-    results_ = sorted(results,  key=lambda x: x[0])
+    result_indexes: list[tuple[int, int, int]] = []
+    for i, _ in enumerate(processes):
+        result = queue.get()
+        results.append(result)
+        result_indexes.append((*result[0], i))
+    sorted_indexes = sorted(result_indexes)
+    results_ = [*map(lambda x: results[x[2]], sorted_indexes)]
 
     for p in processes:
         p.join()

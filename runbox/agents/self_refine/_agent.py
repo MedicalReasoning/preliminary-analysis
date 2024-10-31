@@ -12,6 +12,12 @@ _BenchEvalResult = TypeVar("_BenchEvalResult")
 
 type _SelfRefineRowResult = list[_BenchEvalResult]
 
+def _stop(response: str) -> bool:
+    response_ = response.lower()
+    return "`stop`" in response_\
+        or "'stop'" in response_\
+        or '"stop"' in response_
+
 class SelfRefineAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
     SupportsBenchmark[_BenchInput, _BenchOutput, _BenchEvalResult, _SelfRefineRowResult]
 ):
@@ -45,23 +51,38 @@ class SelfRefineAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
             "iteration": []
         }
 
+        stop = False
+        prediction = output["initial_prediction"]
         for _ in range(self.n_iter):
-            critic_response = invoke(
-                self.critic,
-                { **input, "initial_response": initial_response } # type: ignore
-            )
-            refiner_response = invoke(
-                self.refiner,
-                { **input, "initial_response": initial_response, "critic_response": critic_response } # type: ignore
-            )
+            if not stop:
+                critic_response = invoke(
+                    self.critic,
+                    { **input, "initial_response": initial_response } # type: ignore
+                )
+                stop = _stop(critic_response)
+            else:
+                critic_response = "-"
 
-            output["iteration"].append({ # type: ignore
-                "critic_response": critic_response,
-                "refiner_response": refiner_response,
-                "refiner_prediction": self.parser(refiner_response)
-            })
-
-            initial_response = refiner_response
+            if not stop:
+                refiner_response = invoke(
+                    self.refiner,
+                    { **input, "initial_response": initial_response, "critic_response": critic_response } # type: ignore
+                )
+                refiner_prediction = self.parser(refiner_response)
+                output["iteration"].append({ # type: ignore
+                    "critic_response": critic_response,
+                    "refiner_response": refiner_response,
+                    "refiner_prediction": refiner_prediction
+                })
+                initial_response = refiner_response
+                prediction = refiner_prediction
+            else:
+                refiner_response = "-"
+                output["iteration"].append({ # type: ignore
+                    "critic_response": critic_response,
+                    "refiner_response": refiner_response,
+                    "refiner_prediction": prediction
+                })
 
         return output
 
