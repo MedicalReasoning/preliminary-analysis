@@ -73,6 +73,11 @@ def model_configs(model: str) -> ChatOpenAIConfig:
             "temperature": 0,
             "base_url": os.environ["MEERKAT_8B_BASE_URL"],
             "stop": "<|eot_id|>"
+        },
+        "meditron_70b": {
+            "model": "epfl-llm/meditron-70b",
+            "temperature": 0,
+            "base_url": os.environ["MEDITRON_70B_BASE_URL"]
         }
     }[model]
 
