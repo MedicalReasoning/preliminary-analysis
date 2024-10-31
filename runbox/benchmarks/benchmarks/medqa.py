@@ -22,7 +22,8 @@ class MedQA(Benchmark[MedQAInput, MedQAOutput, MedQAEvalResult]):
         super().__init__(
             "bigbio/med_qa",
             split=split,
-            slice=slice
+            slice=slice,
+            trust_remote_code=True
         )
 
     def preprocess_row(self, row: dict) -> tuple[MedQAInput, MedQAOutput]:
