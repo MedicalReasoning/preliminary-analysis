@@ -1,15 +1,20 @@
-from typing import TypeVar, Generic, Callable, cast
+from typing import Callable, TypeVar, Mapping, Any
 
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, SystemMessage
 
-from runbox.benchmarks import BenchInput, BenchOutput, BenchEvalResult, SupportsBenchmark
+from runbox.benchmarks import SupportsBenchmark
 from runbox.utils import ChatOpenAIConfig, load_chat_prompt_template_json, invoke, ExtractorAdder
 
 
-class VanillaAgent(
-    Generic[BenchInput, BenchOutput, BenchEvalResult],
-    SupportsBenchmark[BenchInput, BenchOutput, BenchEvalResult]
+_BenchInput = TypeVar("_BenchInput", bound=Mapping[str, Any])
+_BenchOutput = TypeVar("_BenchOutput")
+_BenchEvalResult = TypeVar("_BenchEvalResult")
+
+VanillaRowResult = _BenchEvalResult
+
+class VanillaAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
+    SupportsBenchmark[_BenchInput, _BenchOutput, _BenchEvalResult, VanillaRowResult]
 ):
     def __init__(
         self,
@@ -21,14 +26,14 @@ class VanillaAgent(
             | ChatOpenAI(**client_config)
         self.parser = add_extractor(self.parse)
 
-    def run(self, input: BenchInput) -> dict:
+    def run(self, input: _BenchInput) -> dict:
         content = invoke(self.client, input)
         return { "prediction": self.parser(content), "output": content }
 
     def evaluate(
         self,
-        evaluator: Callable[[BenchOutput, BenchOutput | None], BenchEvalResult],
-        label: BenchOutput,
+        evaluator: Callable[[_BenchOutput, _BenchOutput | None], _BenchEvalResult],
+        label: _BenchOutput,
         output: dict
-    ) -> BenchEvalResult:
+    ) -> _BenchEvalResult:
         return evaluator(label, output["prediction"])

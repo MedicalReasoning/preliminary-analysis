@@ -1,15 +1,19 @@
-from typing import TypeVar, Generic, Callable, cast
+from typing import Callable, TypeVar, Mapping, Any
 
 from langchain_openai import ChatOpenAI
-from langchain_core.messages import HumanMessage, SystemMessage
 
-from runbox.benchmarks import BenchInput, BenchOutput, BenchEvalResult, SupportsBenchmark
+from runbox.benchmarks import SupportsBenchmark
 from runbox.utils import ChatOpenAIConfig, load_chat_prompt_template_json, invoke, ExtractorAdder
 
 
-class SelfRefineAgent(
-    Generic[BenchInput, BenchOutput, BenchEvalResult],
-    SupportsBenchmark[BenchInput, BenchOutput, BenchEvalResult]
+_BenchInput = TypeVar("_BenchInput", bound=Mapping[str, Any])
+_BenchOutput = TypeVar("_BenchOutput")
+_BenchEvalResult = TypeVar("_BenchEvalResult")
+
+type _SelfRefineRowResult = list[_BenchEvalResult]
+
+class SelfRefineAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
+    SupportsBenchmark[_BenchInput, _BenchOutput, _BenchEvalResult, _SelfRefineRowResult]
 ):
     def __init__(
         self,
@@ -33,7 +37,7 @@ class SelfRefineAgent(
         assert n_iter > 0
         self.n_iter = n_iter
 
-    def run(self, input: BenchInput) -> dict:
+    def run(self, input: _BenchInput) -> dict:
         initial_response = invoke(self.main, input)
         output: dict = {
             "initial_response": initial_response,
@@ -42,10 +46,16 @@ class SelfRefineAgent(
         }
 
         for _ in range(self.n_iter):
-            critic_response = invoke(self.critic, { **input, "initial_response": initial_response })
-            refiner_response = invoke(self.refiner, { **input, "initial_response": initial_response, "critic_response": critic_response })
+            critic_response = invoke(
+                self.critic,
+                { **input, "initial_response": initial_response } # type: ignore
+            )
+            refiner_response = invoke(
+                self.refiner,
+                { **input, "initial_response": initial_response, "critic_response": critic_response } # type: ignore
+            )
 
-            output["iteration"].append({ # type: ignore[attr-defined]
+            output["iteration"].append({ # type: ignore
                 "critic_response": critic_response,
                 "refiner_response": refiner_response,
                 "refiner_prediction": self.parser(refiner_response)
@@ -57,10 +67,10 @@ class SelfRefineAgent(
 
     def evaluate(
         self,
-        evaluator: Callable[[BenchOutput, BenchOutput | None], BenchEvalResult],
-        label: BenchOutput,
+        evaluator: Callable[[_BenchOutput, _BenchOutput | None], _BenchEvalResult],
+        label: _BenchOutput,
         output: dict
-    ) -> list[BenchEvalResult]:
+    ) -> _SelfRefineRowResult:
         predictions = [output["initial_prediction"]]
         for o in output["iteration"]:
             predictions.append(o["refiner_prediction"])

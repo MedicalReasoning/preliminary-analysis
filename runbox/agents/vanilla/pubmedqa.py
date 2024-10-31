@@ -1,5 +1,5 @@
 from ._agent import VanillaAgent
-from runbox.benchmarks.benchmarks.pubmedqa import PubMedQAInput, PubMedQAOutput, PubMedQAEvalResult, SupportsPubMedQA
+from runbox.benchmarks.benchmarks.pubmedqa import PubMedQAInput, PubMedQAOutput, PubMedQAEvalResult
 
 
 class PubMedQAVanillaAgent(VanillaAgent[PubMedQAInput, PubMedQAOutput, PubMedQAEvalResult]):

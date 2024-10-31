@@ -1,5 +1,8 @@
-*results*
 __pycache__
+.mypy_cache
+.pyre
+
 .env
-cache
-main*.py
+.cache
+queues
+results

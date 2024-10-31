@@ -16,7 +16,7 @@ ChatOpenAIConfig = dict
 
 
 def load_chat_prompt_template_json(json_path: str) -> ChatPromptTemplate:
-    messages = [*map(tuple, json.load(open(json_path, "r")))]
+    messages = [*map(tuple, json.load(open(json_path, "r")))] # type: ignore
     return ChatPromptTemplate.from_messages(messages)
 
 

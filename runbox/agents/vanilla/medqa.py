@@ -1,5 +1,5 @@
 from ._agent import VanillaAgent
-from runbox.benchmarks.benchmarks.medqa import MedQAInput, MedQAOutput, MedQAEvalResult, SupportsMedQA
+from runbox.benchmarks.benchmarks.medqa import MedQAInput, MedQAOutput, MedQAEvalResult
 
 
 class MedQAVanillaAgent(VanillaAgent[MedQAInput, MedQAOutput, MedQAEvalResult]):

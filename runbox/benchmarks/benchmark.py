@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 import os
-from typing import Generic, TypeVar, Iterable, Iterator, Sized, Mapping, Any
+from typing import TypeVar, Iterable, Iterator, Sized, Mapping, Any
 
-from datasets import load_dataset
-from datasets.arrow_dataset import Dataset
+from datasets import load_dataset # type: ignore
+from datasets.arrow_dataset import Dataset # type: ignore
 from tqdm import tqdm
 
 
@@ -25,7 +25,7 @@ def _load_dataset(
     split: str,
     slice: tuple[int, int] | None = None,
     **kwargs
-) -> Dataset:
+) -> Dataset: # type: ignore
     assert __validate_split(split), "`split` must be without combining or slicing."
 
     if slice is not None:
@@ -40,14 +40,16 @@ def _load_dataset(
     )
 
 
-BenchInput = TypeVar("BenchInput", bound=Mapping[str, Any])
-BenchOutput = TypeVar("BenchOutput")
-BenchEvalResult = TypeVar("BenchEvalResult")
-_PreprocessedRow = tuple[BenchInput, BenchOutput]
+_BenchInput = TypeVar("_BenchInput", bound=Mapping[str, Any])
+_BenchOutput = TypeVar("_BenchOutput", contravariant=True)
+_BenchEvalResult = TypeVar("_BenchEvalResult")
+_PreprocessedRow = tuple[_BenchInput, _BenchOutput]
+
+from typing import Generic
 
 class Benchmark(
     ABC,
-    Generic[BenchInput, BenchOutput, BenchEvalResult],
+    Generic[_BenchInput, _BenchOutput, _BenchEvalResult],
     Sized,
     Iterable[_PreprocessedRow]
 ):
@@ -65,12 +67,12 @@ class Benchmark(
 
     def __iter__(self) -> Iterator[_PreprocessedRow]:
         for row in tqdm(self._dataset):
-            yield self.preprocess_row(row)
+            yield self.preprocess_row(row) # type: ignore
 
     @abstractmethod
     def preprocess_row(self, row: dict) -> _PreprocessedRow:
         ...
 
     @abstractmethod
-    def evaluate_output(self, label: BenchOutput, prediction: BenchOutput | None) -> BenchEvalResult:
+    def evaluate_output(self, label: _BenchOutput, prediction: _BenchOutput | None) -> _BenchEvalResult:
         ...

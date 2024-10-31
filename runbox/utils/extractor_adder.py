@@ -13,7 +13,7 @@ ExtractorAdder = Callable[[_Parser], _Parser]
 
 def _create_extractor_adder(extractor: Callable[[str], str | None]) -> ExtractorAdder:
     def add_extractor(parser: _Parser) -> _Parser:
-        def extractor_added(output: str) -> _BenchOutput | None:
+        def extractor_added(output: str) -> _BenchOutput | None: # type: ignore
             if (extracted_str := extractor(output)) is not None:
                 return parser(extracted_str)
             else:
@@ -32,7 +32,7 @@ def _extract(output: str) -> str | None:
 
 def create_4o_mini_extractor(prompt_path: str) -> ExtractorAdder:
     gpt_4o_mini = load_chat_prompt_template_json(prompt_path)\
-        | ChatOpenAI(model="gpt-4o-mini", temperature=0)
+        | ChatOpenAI(model="gpt-4o-mini", temperature=0) # type: ignore
 
     def extract_4o_mini(output: str) -> str | None:
         if (first_try := _extract(output)) is not None:

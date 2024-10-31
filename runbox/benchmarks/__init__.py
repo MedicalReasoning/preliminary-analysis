@@ -1,4 +1,4 @@
-from .benchmark import Benchmark, BenchInput, BenchOutput, BenchEvalResult
+from .benchmark import Benchmark
 
 from .benchmarks.medqa import MedQA
 from .benchmarks.medmcqa import MedMCQA

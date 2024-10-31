@@ -8,9 +8,9 @@ class MedMCQAInput(TypedDict):
     question: str
     options: str
 
-MedMCQAOutput = str
+type MedMCQAOutput = str
 
-MedMCQAEvalResult = bool
+type MedMCQAEvalResult = bool
 
 class MedMCQA(Benchmark[MedMCQAInput, MedMCQAOutput, MedMCQAEvalResult]):
     def __init__(
@@ -39,6 +39,3 @@ class MedMCQA(Benchmark[MedMCQAInput, MedMCQAOutput, MedMCQAEvalResult]):
     def evaluate_output(self, label: MedMCQAOutput, prediction: MedMCQAOutput | None) -> MedMCQAEvalResult:
         result = label == prediction
         return result
-
-class SupportsMedMCQA(SupportsBenchmark[MedMCQAInput, MedMCQAOutput, MedMCQAEvalResult]):
-    ...

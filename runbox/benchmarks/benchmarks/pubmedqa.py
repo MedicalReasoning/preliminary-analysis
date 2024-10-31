@@ -8,9 +8,9 @@ class PubMedQAInput(TypedDict):
     question: str
     context: str
 
-PubMedQAOutput = str
+type PubMedQAOutput = str
 
-PubMedQAEvalResult = bool
+type PubMedQAEvalResult = bool
 
 class PubMedQA(Benchmark[PubMedQAInput, PubMedQAOutput, PubMedQAEvalResult]):
     def __init__(
@@ -37,8 +37,5 @@ class PubMedQA(Benchmark[PubMedQAInput, PubMedQAOutput, PubMedQAEvalResult]):
         return input, label
 
     def evaluate_output(self, label: PubMedQAOutput, prediction: PubMedQAOutput | None) -> PubMedQAEvalResult:
-        result = label.lower() == prediction.lower()
+        result = label.lower() == (prediction if prediction is not None else "").lower()
         return result
-
-class SupportsPubMedQA(SupportsBenchmark[PubMedQAInput, PubMedQAOutput, PubMedQAEvalResult]):
-    ...

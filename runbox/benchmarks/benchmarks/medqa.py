@@ -8,9 +8,9 @@ class MedQAInput(TypedDict):
     question: str
     options: str
 
-MedQAOutput = str
+type MedQAOutput = str
 
-MedQAEvalResult = bool
+type MedQAEvalResult = bool
 
 class MedQA(Benchmark[MedQAInput, MedQAOutput, MedQAEvalResult]):
     def __init__(
@@ -36,6 +36,3 @@ class MedQA(Benchmark[MedQAInput, MedQAOutput, MedQAEvalResult]):
     def evaluate_output(self, label: MedQAOutput, prediction: MedQAOutput | None) -> MedQAEvalResult:
         result = label == prediction
         return result
-
-class SupportsMedQA(SupportsBenchmark[MedQAInput, MedQAOutput, MedQAEvalResult]):
-    ...
