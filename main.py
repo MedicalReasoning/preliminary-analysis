@@ -99,8 +99,8 @@ def run_single_config(
         result = queue.get()
         results.append(result)
         result_indexes.append((*result[0], i))
-    sorted_indexes = sorted(result_indexes)
-    results_ = [*map(lambda x: results[x[2]], sorted_indexes)]
+    sorted_indexes = [*map(lambda x: x[2], sorted(result_indexes))]
+    results_ = [*map(lambda i: results[i], sorted_indexes)]
 
     for p in processes:
         p.join()
