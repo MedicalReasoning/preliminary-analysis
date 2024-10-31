@@ -1,4 +1,4 @@
-from typing import TypedDict
+from typing import TypedDict, TypeVar
 
 from ..benchmark import Benchmark
 from ..supports_benchmark import SupportsBenchmark
