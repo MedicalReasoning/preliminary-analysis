@@ -4,7 +4,6 @@ from typing import TypeVar, Iterable, Iterator, Sized, Mapping, Any
 
 from datasets import load_dataset # type: ignore
 from datasets.arrow_dataset import Dataset # type: ignore
-from tqdm import tqdm
 
 
 def __validate_split(split: str) -> bool:
@@ -61,7 +60,7 @@ class Benchmark(
         return len(self._dataset)
 
     def __iter__(self) -> Iterator[_PreprocessedRow]:
-        for row in tqdm(self._dataset, desc=self._desc):
+        for row in self._dataset:
             yield self.preprocess_row(row) # type: ignore
 
     @abstractmethod

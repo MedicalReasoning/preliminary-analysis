@@ -93,7 +93,7 @@ def run_single_config(
         p.start()
 
     results: list[tuple[int, dict]] = []
-    for _ in range(n_queue):
+    for _ in tqdm(range(n_queue)):
         results.append(queue.get())
     results_ = sorted(results)
 
