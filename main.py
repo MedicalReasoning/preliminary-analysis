@@ -44,7 +44,7 @@ def run_single_chunk(
 
     results = []
 
-    for input, label in dataset:
+    for i, (input, label) in enumerate(dataset):
         try:
             output = agent.run(input)
             result = agent.evaluate(dataset.evaluate_output, label, output)
@@ -52,14 +52,12 @@ def run_single_chunk(
             output = {}
             result = [False] * 4
 
-        results.append({
+        queue.put((chunk[0] + i, {
             "input": input,
             "label": label,
             "output": output,
             "result": result
-        })
-
-    queue.put((chunk, results))
+        }))
 
 def calc_full_score(
     config: RunConfig,
@@ -84,6 +82,7 @@ def run_single_config(
     result_dir_path: str
 ) -> None:
     chunks = generate_chunks(config["bench_config"]["slice"], n_process)
+    n_queue = (lambda x: x[1] - x[0])(config["bench_config"]["slice"])
 
     processes: list[Process] = []
     queue = Queue()
@@ -94,7 +93,7 @@ def run_single_config(
         p.start()
 
     results: list[tuple[tuple[int, int], list[dict]]] = []
-    for _ in processes:
+    for _ in range(n_queue):
         results.append(queue.get())
     results_ = sorted(results)
 
