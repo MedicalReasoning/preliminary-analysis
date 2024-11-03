@@ -92,12 +92,12 @@ def run_single_config(
         processes.append(p)
         p.start()
 
-    results: list[tuple[tuple[int, int], list[dict]]] = []
+    results: list[tuple[int, dict]] = []
     for _ in range(n_queue):
         results.append(queue.get())
     results_ = sorted(results)
 
-    full: list[dict] = sum([*map(lambda x: x[1], results_)], [])
+    full: list[dict] = [*map(lambda x: x[1], results_)]
     full_score = calc_full_score(config, [*map(lambda x: x["result"], full)])
 
     save_results(
