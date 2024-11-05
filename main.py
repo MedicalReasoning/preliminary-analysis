@@ -39,8 +39,7 @@ def generate_chunks(slice: tuple[int, int], n_process: int) -> list[tuple[int, i
     return chunks
 
 def buffer_chunk_path(config: RunConfig, chunk: tuple[int, int]) -> Path:
-    return Path(os.environ["BUFFER_PATH"])\
-        / Path(f"{config['benchmark']}-{'-'.join(config['models'])}-{chunk}.json")
+    return BUFFER_PATH / Path(f"{config['benchmark']}-{'-'.join(config['models'])}-{chunk}.json")
 
 def run_single_chunk(
     queue: Queue,
