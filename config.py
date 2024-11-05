@@ -1,5 +1,6 @@
 import os
 from typing import Callable, TypeVar, Mapping, Any
+import json
 
 from runbox.agents import *
 from runbox.benchmarks import *
@@ -58,34 +59,12 @@ benchmark_configs: dict[str, tuple[type[Benchmark], SelfRefineAgentCreator]] = {
     # "ddxplus": (DDXPlus, create_sr_agent("ddxplus", DDXPlusSelfRefineAgent))
 }
 
-def model_configs(model: str) -> ChatOpenAIConfig:
-    return {
-        "4o": {
-            "model": "gpt-4o",
-            "temperature": 0
-        },
-        "4o_mini": {
-            "model": "gpt-4o-mini",
-            "temperature": 0
-        },
-        "meerkat_8b": {
-            "model": "dmis-lab/llama-3-meerkat-8b-v1.0",
-            "temperature": 0,
-            "base_url": os.environ["MEERKAT_8B_BASE_URL"],
-            "stop": "<|eot_id|>"
-        },
-        "meditron_70b": {
-            "model": "zechen-nlp/meditron-70b-v2-instruct",
-            "temperature": 0,
-            "base_url": os.environ["MEDITRON_70B_BASE_URL"]
-        },
-        "llama_8b": {
-            "model": "meta-llama/Llama-3.1-8B-Instruct",
-            "temperature": 0,
-            "base_url": os.environ["LLAMA_8B_BASE_URL"]
-        },
-    }[model]
 
+MODEL_CONFIGS_PATH = "models.json"
+try:
+    model_configs: dict = json.load(open(MODEL_CONFIGS_PATH, "r"))
+except:
+    raise Exception("model config file required")
 def prepare(
     benchmark: str,
     main: str,
@@ -97,8 +76,8 @@ def prepare(
     return (
         benchmark_,
         create_agent(
-            model_configs(main),
-            model_configs(critic),
-            model_configs(refiner)
+            model_configs[main],
+            model_configs[critic],
+            model_configs[refiner]
         )
     )

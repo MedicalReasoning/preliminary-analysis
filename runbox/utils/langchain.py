@@ -6,12 +6,6 @@ from langchain_core.runnables import Runnable
 from langchain_core.prompts import ChatPromptTemplate
 
 
-"""
-class ChatOpenAIConfig(TypedDict):
-    model: str
-    temperature: float
-    base_url: str | None
-"""
 ChatOpenAIConfig = dict
 
 
