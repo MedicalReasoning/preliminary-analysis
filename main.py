@@ -82,13 +82,20 @@ def calc_full_score(
     _, agent = prepare(config["benchmark"], *config["models"])
     return agent.calc_full_score(full)
 
+def save_path(
+    config: RunConfig,
+    result_dir_path: str
+) -> Path:
+    file_name = f"{config['benchmark']}-{'-'.join(config['models'])}.json"
+    file_path = Path(result_dir_path) / Path(file_name)
+    return file_path
+
 def save_results(
     config: RunConfig,
     result_dir_path: str,
     result: dict
 ) -> None:
-    file_name = f"{config['benchmark']}-{'-'.join(config['models'])}.json"
-    file_path = Path(result_dir_path) / Path(file_name)
+    file_path = save_path(config, result_dir_path)
     with open(file_path, "w") as f:
         json.dump(result, f)
 
@@ -152,7 +159,8 @@ def main() -> None:
     queue = load_queue(queue_path)
 
     for config in tqdm(queue, desc="configs"):
-        run_single_config(config, n_process, result_dir_path)
+        if not save_path(config, result_dir_path).exists():
+            run_single_config(config, n_process, result_dir_path)
 
 if __name__ == "__main__":
     load_dotenv()
