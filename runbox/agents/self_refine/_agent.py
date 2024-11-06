@@ -74,7 +74,9 @@ class SelfRefineAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
                 output["iteration"].append({ # type: ignore
                     "critic_response": critic_response,
                     "refiner_response": refiner_response,
-                    "refiner_prediction": refiner_prediction
+                    "refiner_prediction": refiner_prediction,
+                    "critic_cost": critic_cost,
+                    "refiner_cost": refiner_cost
                 })
                 initial_response = refiner_response
                 prediction = refiner_prediction

@@ -27,8 +27,8 @@ class VanillaAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
         self.parser = add_extractor(self.parse)
 
     def run(self, input: _BenchInput) -> dict:
-        content = invoke(self.client, input)
-        return { "prediction": self.parser(content), "output": content }
+        content, cost = invoke(self.client, input)
+        return { "prediction": self.parser(content), "output": content, "cost": cost }
 
     def evaluate(
         self,
