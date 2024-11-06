@@ -84,15 +84,15 @@ def calc_full_score(
 
 def save_path(
     config: RunConfig,
-    result_dir_path: str
+    result_dir_path: Path
 ) -> Path:
     file_name = f"{config['benchmark']}-{'-'.join(config['models'])}.json"
-    file_path = Path(result_dir_path) / Path(file_name)
+    file_path = result_dir_path / Path(file_name)
     return file_path
 
 def save_results(
     config: RunConfig,
-    result_dir_path: str,
+    result_dir_path: Path,
     result: dict
 ) -> None:
     file_path = save_path(config, result_dir_path)
@@ -102,7 +102,7 @@ def save_results(
 def run_single_config(
     config: RunConfig,
     n_process: int,
-    result_dir_path: str
+    result_dir_path: Path
 ) -> None:
     chunks = generate_chunks(config["bench_config"]["slice"], n_process)
     n_queue = (lambda x: x[1] - x[0])(config["bench_config"]["slice"])
@@ -152,7 +152,8 @@ def main() -> None:
     args = parse_args()
     queue_path: str = args.queue_path
     n_process: int = args.n_process
-    result_dir_path: str = args.result_dir_path
+    result_dir_path = Path(args.result_dir_path)
+    result_dir_path.mkdir(parents=True, exist_ok=True)
     BUFFER_PATH = Path(args.buffer_path)
     BUFFER_PATH.mkdir(parents=True, exist_ok=True)
 
