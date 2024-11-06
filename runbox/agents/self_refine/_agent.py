@@ -44,10 +44,11 @@ class SelfRefineAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
         self.n_iter = n_iter
 
     def run(self, input: _BenchInput) -> dict:
-        initial_response = invoke(self.main, input)
+        initial_response, initial_cost = invoke(self.main, input)
         output: dict = {
             "initial_response": initial_response,
             "initial_prediction": self.parser(initial_response),
+            "initial_cost": initial_cost,
             "iteration": []
         }
 
@@ -55,16 +56,17 @@ class SelfRefineAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
         prediction = output["initial_prediction"]
         for _ in range(self.n_iter):
             if not stop:
-                critic_response = invoke(
+                critic_response, critic_cost = invoke(
                     self.critic,
                     { **input, "initial_response": initial_response } # type: ignore
                 )
                 stop = _stop(critic_response)
             else:
                 critic_response = "-"
+                critic_cost = 0
 
             if not stop:
-                refiner_response = invoke(
+                refiner_response, refiner_cost = invoke(
                     self.refiner,
                     { **input, "initial_response": initial_response, "critic_response": critic_response } # type: ignore
                 )
@@ -78,10 +80,13 @@ class SelfRefineAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
                 prediction = refiner_prediction
             else:
                 refiner_response = "-"
+                refiner_cost = 0
                 output["iteration"].append({ # type: ignore
                     "critic_response": critic_response,
                     "refiner_response": refiner_response,
-                    "refiner_prediction": prediction
+                    "refiner_prediction": prediction,
+                    "critic_cost": critic_cost,
+                    "refiner_cost": refiner_cost
                 })
 
         return output

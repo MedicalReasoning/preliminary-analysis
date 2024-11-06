@@ -38,7 +38,7 @@ def create_4o_mini_extractor(prompt_path: str) -> ExtractorAdder:
         if (first_try := _extract(output)) is not None:
             return first_try
         else:
-            second_try = invoke(gpt_4o_mini, { "output": output })[3:-3]
+            second_try = invoke(gpt_4o_mini, { "output": output })[0][3:-3]
             if second_try in ["None", None, ""]:
                 return None
             else:

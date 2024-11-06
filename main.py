@@ -7,7 +7,6 @@ from pathlib import Path
 
 from tqdm import tqdm
 from dotenv import load_dotenv # type: ignore
-# from langchain_community.callbacks import get_openai_callback
 
 from config import prepare
 
