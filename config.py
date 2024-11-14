@@ -56,7 +56,7 @@ benchmark_configs: dict[str, tuple[type[Benchmark], SelfRefineAgentCreator]] = {
     "medqa": (MedQA, create_sr_agent("medqa", MedQASelfRefineAgent)),
     "medmcqa": (MedMCQA, create_sr_agent("medmcqa", MedMCQASelfRefineAgent)),
     "pubmedqa": (PubMedQA, create_sr_agent("pubmedqa", PubMedQASelfRefineAgent)),
-    # "ddxplus": (DDXPlus, create_sr_agent("ddxplus", DDXPlusSelfRefineAgent))
+    "ddxplus": (DDXPlus, create_sr_agent("ddxplus", DDXPlusSelfRefineAgent))
 }
 
 

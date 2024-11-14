@@ -1,7 +1,6 @@
 from typing import TypedDict
 
 from ..benchmark import Benchmark
-from ..supports_benchmark import SupportsBenchmark
 
 
 class PubMedQAInput(TypedDict):

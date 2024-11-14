@@ -1,0 +1,10 @@
+[
+    [
+        "system",
+        "Provide appropriate feedback on possible errors in logic or assumptions for a given diagnosis. If the diagnosis is good enough that it doesn't need to be improved, write ```STOP``` at the end. (Include backticks too!)"
+    ],
+    [
+        "user",
+        "### Patient information\n{evidences}\n\n### Options\n{options}\n\n### Response\n{initial_response}"
+    ]
+]
