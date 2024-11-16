@@ -1,1 +1,34 @@
-[]
+[
+    [
+        "system",
+        "Extract an answer from a given response. The extracted answer must be enclosed in '```'."
+    ],
+    [
+        "user",
+        "### Response\nBased on the patient's symptoms and history, the most likely diagnosis is **Possible NSTEMI / STEMI**. \n\nThe patient reports pain in the lower and upper chest with a moderate intensity of 6, and the pain is characterized as haunting, sensitive, tugging, and burning. The pain radiates to both the lower and upper chest, which is a common presentation in cardiac-related issues. The pain's intensity and location, along with the absence of gastrointestinal symptoms (like those associated with GERD), suggest a cardiac origin. \n\nWhile other options like unstable angina and pericarditis could also be considered, the combination of chest pain characteristics and the potential for acute coronary syndrome makes NSTEMI or STEMI a more pressing concern that requires immediate evaluation.\n\nThus, the final answer is:\n`Possible NSTEMI / STEMI`"
+    ],
+    [
+        "assistant",
+        "```Possible NSTEMI / STEMI```"
+    ],
+    [
+        "user",
+        "### Response\nBased on the provided patient information, the key symptoms include burning pain on the right side of the chest and in the pharynx, with a pain intensity of 5 and a precise location rating of 7. The patient does not exhibit shortness of breath, cough, nasal congestion, or any other respiratory symptoms, and there is no recent travel history that could suggest exposure to infectious diseases.\n\nGiven these details, the most likely diagnosis is **Viral pharyngitis**. This condition can cause throat pain and discomfort, which may be perceived as burning, and can sometimes be associated with referred pain to the chest area. The absence of respiratory distress and other significant symptoms makes this diagnosis more plausible than others such as pneumonia or bronchitis, which would typically present with more pronounced respiratory symptoms.\n\nThus, the final answer is 'Viral pharyngitis'"
+    ],
+    [
+        "assistant",
+        "```Viral pharyngitis```"
+    ],
+    [
+        "user",
+        "### Response\nBased on the patient's consultation history, there are no indications of acute dystonic reactions, as the patient has not reported any symptoms such as difficulty keeping the tongue in the mouth, trouble opening or raising eyelids, or muscle spasms. Additionally, the patient has not taken any antipsychotic medication recently, which is often associated with acute dystonia.\n\nOn the other hand, myasthenia gravis is characterized by muscle weakness that worsens with activity and improves with rest. The patient has not reported any symptoms that would suggest muscle weakness or fatigue, nor have they indicated any issues with breathing or swallowing, which are common in myasthenia gravis.\n\nGiven the absence of relevant symptoms for both conditions, but considering the lack of acute dystonic symptoms, the most likely option based on the provided information is Myasthenia gravis."
+    ],
+    [
+        "assistant",
+        "```Myasthenia gravis```"
+    ],
+    [
+        "user",
+        "### Response\n{output}"
+    ]
+]

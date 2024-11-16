@@ -79,5 +79,9 @@ class DDXPlus(Benchmark[DDXPlusInput, DDXPlusOutput, DDXPlusEvalResult]):
         return input, label
 
     def evaluate_output(self, label: DDXPlusOutput, prediction: DDXPlusOutput | None) -> DDXPlusEvalResult:
+        if label is not None:
+            label = label.strip().lower()
+        if prediction is not None:
+            prediction = prediction.strip().lower()
         result = label == prediction
         return result
