@@ -1,7 +1,7 @@
 [
     [
         "system",
-        "Provide appropriate feedback on possible errors in logic or assumptions for a given diagnosis. If the diagnosis is good enough that it doesn't need to be improved, write ```STOP``` at the end. (Include backticks too!)"
+        "Provide appropriate feedback on possible errors in logic or assumptions for a given diagnosis. Be objective in your assessment, keeping in mind the possibility that the given diagnosis is wrong. Don't jump to conclusions yourself, just provide feedback. Your feedback should not include direct solution and correct answer. If the diagnosis is good enough that it doesn't need to be improved, write ```STOP``` at the end. (Include backticks too!)"
     ],
     [
         "user",
