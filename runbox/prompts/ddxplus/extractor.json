@@ -1,7 +1,7 @@
 [
     [
         "system",
-        "Extract an answer from a given response. The extracted answer must be enclosed in '```'."
+        "Extract an answer from a given response. If you don't see any appropriately derived answers, print 'None'. The extracted answer must be enclosed in '```'."
     ],
     [
         "user",
@@ -18,6 +18,14 @@
     [
         "assistant",
         "```Viral pharyngitis```"
+    ],
+    [
+        "user",
+        "### Patient information\nAge: 49\nSex: F\nDo you have pain somewhere, related to your reason for consulting?\n    - N\nCharacterize your pain:\n    - haunting\n    - sensitive\n    - tugging\n    - burning\nDo you feel pain somewhere?\n    - lower chest\n    - upper chest\n    - hypochondrium(R)\nHow intense is the pain?\n    - 6 (possible values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])\nDoes the pain radiate to another location?\n    - lower chest\n    - upper chest\nHow precisely is the pain located?\n    - 3 (possible values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])\nHow fast did the pain appear?\n    - 2 (possible values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])\nAre you significantly overweight compared to people of the same height as you?\n    - N\nDo you drink alcohol excessively or do you have an addiction to alcohol?\n    - N\nDo you have a hiatal hernia?\n    - N\nHave you recently had stools that were black (like coal)?\n    - N\nDo you think you are pregnant or are you currently pregnant?\n    - N\nDo you have a burning sensation that starts in your stomach then goes up into your throat, and can be associated with a bitter taste in your mouth?\n    - N\nDo you have a cough?\n    - N\nHave you traveled out of the country in the last 4 weeks?\n    - N\nAre your symptoms worse when lying down and alleviated while sitting up?\n    - N\n\n### Options\n- Bronchitis\n- GERD\n- Possible NSTEMI / STEMI\n- Unstable angina\n- Pericarditis\n- Anemia\n- Stable angina\n- Boerhaave"
+    ],
+    [
+        "assistant",
+        "```None```"
     ],
     [
         "user",
