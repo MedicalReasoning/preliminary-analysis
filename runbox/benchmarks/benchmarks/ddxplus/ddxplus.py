@@ -13,7 +13,7 @@ type DDXPlusOutput = str
 type DDXPlusEvalResult = bool
 
 
-_release_evidences = json.load(open("./release_evidences.json"))
+_release_evidences = json.load(open("runbox/benchmarks/benchmarks/ddxplus/release_evidences.json"))
 
 
 def _load_evidences(evidences: str) -> list[str]:
@@ -30,7 +30,10 @@ def _convert_answer(row: dict, value: int | None) -> str:
 def _generate_str(row: dict) -> str:
     evidences = _load_evidences(row["EVIDENCES"])
     ev = ""
-    buf = []
+    buf = [
+        f"Age: {row['AGE']}",
+        f"Sex: {row['SEX']}"
+    ]
     for code in evidences:
         code_split = code.split("_@_")
         if code_split[0] != ev:
@@ -70,7 +73,7 @@ class DDXPlus(Benchmark[DDXPlusInput, DDXPlusOutput, DDXPlusEvalResult]):
     def preprocess_row(self, row: dict) -> tuple[DDXPlusInput, DDXPlusOutput]:
         input: DDXPlusInput = {
             "evidences": _generate_str(row),
-            "options": "\n".join(f"- {o[0]}" for o in row["DIFFERENTIAL_DIAGNOSIS"])
+            "options": "\n".join(f"- {o[0]}" for o in json.loads(row["DIFFERENTIAL_DIAGNOSIS"].replace("'", '"')))
         }
         label: DDXPlusOutput = row["PATHOLOGY"]
         return input, label
