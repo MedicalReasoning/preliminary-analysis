@@ -60,7 +60,9 @@ def run_single_chunk(
                 output = agent.run(input)
                 result = agent.evaluate(dataset.evaluate_output, label, output)
             except Exception as e:
-                output = {}
+                output = {
+                    "error": str(e)
+                }
                 result = [False] * 4
 
             results.append({
@@ -69,7 +71,7 @@ def run_single_chunk(
                 "output": output,
                 "result": result
             })
-            json.dump(results, open(buffer_path, "w"))
+            json.dump(results, open(buffer_path, "w"), indent=2)
         else:
             n_pass -= 1
 
@@ -97,7 +99,7 @@ def save_results(
 ) -> None:
     file_path = save_path(config, result_dir_path)
     with open(file_path, "w") as f:
-        json.dump(result, f)
+        json.dump(result, f, indent=2)
 
 def run_single_config(
     config: RunConfig,
