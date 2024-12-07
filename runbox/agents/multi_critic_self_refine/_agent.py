@@ -1,5 +1,6 @@
 from typing import Callable, TypeVar, Mapping, Any
 import os
+from pathlib import Path
 
 from langchain_openai import ChatOpenAI
 
@@ -37,7 +38,7 @@ class MultiCriticSelfRefineAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
         self.main = load_chat_prompt_template_json(main_prompt_path)\
             | ChatOpenAI(**main_config)
         self.critics = [
-            load_chat_prompt_template_json(prompt_path)\
+            load_chat_prompt_template_json(critic_prompts_dir_path / Path(prompt_path))\
                 | ChatOpenAI(**critic_config)
             for prompt_path in os.listdir(critic_prompts_dir_path)
         ]

@@ -32,7 +32,7 @@ def mcsr_prompt_paths(benchmark: str) -> tuple[str, str, str, str, str]:
 def create_sr_agent(
     benchmark: str,
     AgentType: type[MultiCriticSelfRefineAgent[_BenchInput, _BenchOutput, _BenchEvalResult]],
-) -> SelfRefineAgentCreator[_BenchInput, _BenchOutput, _BenchEvalResult]: # type: ignore
+) -> MultiCriticSelfRefineAgentCreator[_BenchInput, _BenchOutput, _BenchEvalResult]: # type: ignore
     paths = mcsr_prompt_paths(benchmark)
 
     def f(
@@ -54,7 +54,7 @@ def create_sr_agent(
 
     return f
 
-benchmark_configs: dict[str, tuple[type[Benchmark], SelfRefineAgentCreator]] = {
+benchmark_configs: dict[str, tuple[type[Benchmark], MultiCriticSelfRefineAgentCreator]] = {
     "medqa": (MedQA, create_sr_agent("medqa", MedQAMultiCriticSelfRefineAgent))
 }
 
