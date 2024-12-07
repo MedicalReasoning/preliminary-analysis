@@ -1,6 +1,7 @@
 from typing import TypedDict, Mapping, Any, cast, TypeVar, ParamSpec, Callable
 import json
 from functools import wraps
+from pathlib import Path
 
 from langchain_openai import ChatOpenAI
 from langchain_core.runnables import Runnable
@@ -11,7 +12,7 @@ from langchain_community.callbacks import get_openai_callback # type: ignore
 ChatOpenAIConfig = dict
 
 
-def load_chat_prompt_template_json(json_path: str) -> ChatPromptTemplate:
+def load_chat_prompt_template_json(json_path: str | Path) -> ChatPromptTemplate:
     messages = [*map(tuple, json.load(open(json_path, "r")))] # type: ignore
     return ChatPromptTemplate.from_messages(messages)
 

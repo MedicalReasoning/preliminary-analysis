@@ -63,7 +63,11 @@ class MultiCriticSelfRefineAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
 
         agg_response, agg_cost = invoke(
             self.agg_critic,
-            { f"critic_{i}": res for i, res in enumerate(responses) }
+            {
+                **input,
+                "initial_response": initial_response,
+                **{ f"critic_{i}": res for i, res in enumerate(responses) }
+            }
         )
         total_cost += agg_cost
         stop = _stop(agg_response)
@@ -110,6 +114,7 @@ class MultiCriticSelfRefineAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
                 refiner_response = "-"
                 refiner_cost = 0
                 output["iteration"].append({ # type: ignore
+                    "critic_details": critic_responses,
                     "critic_response": critic_response,
                     "refiner_response": refiner_response,
                     "refiner_prediction": prediction,
