@@ -30,7 +30,7 @@ class SelfRefineAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
         critic_prompt_path: str,
         refiner_prompt_path: str,
         add_extractor: ExtractorAdder,
-        n_iter: int = 1
+        n_iter: int = 3
     ) -> None:
         self.main = load_chat_prompt_template_json(main_prompt_path)\
             | ChatOpenAI(**main_config)
