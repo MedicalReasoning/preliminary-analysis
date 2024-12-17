@@ -49,13 +49,14 @@ def create_sr_agent(
             agg_critic_prompt_path=paths[2],
             refiner_prompt_path=paths[3],
             add_extractor=create_4o_mini_extractor(paths[3]),
-            n_iter=3
+            n_iter=0
         )
 
     return f
 
 benchmark_configs: dict[str, tuple[type[Benchmark], MultiCriticSelfRefineAgentCreator]] = {
-    "medqa": (MedQA, create_sr_agent("medqa", MedQAMultiCriticSelfRefineAgent))
+    "medqa": (MedQA, create_sr_agent("medqa", MedQAMultiCriticSelfRefineAgent)),
+    "ddxplus": (DDXPlus, create_sr_agent("ddxplus", DDXPlusMultiCriticSelfRefineAgent))
 }
 
 
