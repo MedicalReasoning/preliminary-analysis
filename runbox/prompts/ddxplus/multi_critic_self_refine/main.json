@@ -1,0 +1,74 @@
+[
+    [
+        "system",
+        "You are a medical expert skilled at making informed decisions that help human medical experts in making clinical decisions based on the given information. For the given INPUT, demonstrate your understanding of basic and clinical sciences, medical knowledge, and the mechanisms underlying health and disease. Show your ability to apply this knowledge to various medical scenarios, particularly in making decisions for clinical diagnosis. In your INITIAL RESPONSE, provide 1) a detailed explanation of your reasoning, including why the correct answer is correct and why the other options are incorrect, and 2) your final answer. Base your answers on current and standard practices as referenced in medical guidelines. Remember, the correct answer always exists among the options provided, so be sure to select one of them. Your final answer should be a diagnosis among the choices (Acute laryngitis, Bronchitis, Tuberculosis, Epiglottitis, or Viral pharyngitis) after the word wrapped in triple backticks like this: ```Epiglottitis```.\n\n[Steps for Output generation]\n1. Read INPUT carefully.\n2. Output INITIAL RESPONSE, including 1) a detailed explanation of your reasoning, and 2) a final answer wrapped in triple backticks."
+    ],
+    [
+        "user",
+        "### Patient information\nAge: 60\nSex: M\nDo you have chest pain?\nY\nDescribe the chest pain:\ntightness\npressure\nHow severe is the pain?\n8 (possible values: [0-10])\nDoes the pain radiate?\nto left arm\nto jaw\nDo you have shortness of breath?\nY\nDo you have nausea or vomiting?\nY\nDo you have a cough?\nN\nDo you have a fever?\nN\nDo you smoke cigarettes?\nY\nDo you have a history of hypertension?\nY\nDo you have a history of high cholesterol?\nY\n\n### Options\nGastroesophageal reflux disease (GERD)\nMyocardial infarction (heart attack)\nPneumonia\nPanic attack\nPulmonary embolism\nCostochondritis"
+    ],
+    [
+        "assistant",
+        "Let's think step by step.\n\nThe patient is a 60-year-old male presenting with severe chest pain described as tightness and pressure, rated 8/10. The pain radiates to the left arm and jaw. He also has shortness of breath, nausea, and vomiting. He denies cough and fever. He is a smoker with a history of hypertension and high cholesterol.\n\nAnalyzing the options:\n\nGastroesophageal reflux disease (GERD): Usually causes burning chest pain associated with meals; doesn't typically radiate to the arm or jaw.\n\nMyocardial infarction (heart attack): Classic symptoms include chest tightness, pain radiating to left arm or jaw, shortness of breath, nausea, and vomiting. Risk factors are present.\n\nPneumonia: Presents with fever, cough, and possibly chest pain, but not radiating pain.\n\nPanic attack: Can mimic heart attack symptoms but less likely given the patient's age and risk factors.\n\nPulmonary embolism: Causes sudden shortness of breath and chest pain but not radiating pain to the arm or jaw.\n\nCostochondritis: Inflammation of chest wall; pain is localized and reproducible on palpation.\n\nGiven the symptoms and risk factors, the most likely diagnosis is Myocardial infarction.\n\n```Myocardial infarction```"
+    ],
+    [
+        "user",
+        "### Patient information\nAge: 25\nSex: F\nDo you have abdominal pain?\nY\nWhere is the pain located?\nright lower quadrant\nDescribe the pain:\nsharp\nworsening over time\nWhen did the pain start?\n12 hours ago\nDo you have nausea or vomiting?\nY\nDo you have fever?\nY\nDo you have diarrhea?\nN\nAre you pregnant?\nN\nLast menstrual period?\n2 weeks ago (normal)\nDo you have pain during urination?\nN\n\n### Options\nAppendicitis\nEctopic pregnancy\nOvarian cyst rupture\nUrinary tract infection\nGastroenteritis\nPelvic inflammatory disease"
+    ],
+    [
+        "assistant",
+        "Let's think step by step.\n\nThe patient is a 25-year-old female with sharp, worsening right lower quadrant abdominal pain starting 12 hours ago. She has nausea, vomiting, and fever. She is not pregnant, and her last menstrual period was normal.\n\nAnalyzing the options:\n\nAppendicitis: Typical presentation matches the patient's symptoms.\n\nEctopic pregnancy: Unlikely since she's not pregnant and had a normal period.\n\nOvarian cyst rupture: Possible but less likely with fever.\n\nUrinary tract infection: Usually presents with urinary symptoms.\n\nGastroenteritis: Typically causes diffuse abdominal pain with diarrhea.\n\nPelvic inflammatory disease: Often associated with vaginal discharge and sexual activity.\n\nThe most probable diagnosis is Appendicitis.\n\n```Appendicitis```"
+    ],
+    [
+        "user",
+        "### Patient information\nAge: 45\nSex: M\nDo you have shortness of breath?\nY\nDo you have a cough?\nY\nDescribe the cough:\nproductive\ngreen sputum\nDo you have chest pain?\nY\nWhere is the chest pain?\nRight side, worsens with deep breaths\nDo you have fever?\nY\nDo you smoke cigarettes?\nY\nHave you traveled recently?\nN\n\n### Options\nPneumonia\nAsthma exacerbation\nChronic bronchitis\nPulmonary embolism\nLung cancer\nTuberculosis"
+    ],
+    [
+        "assistant",
+        "Let's think step by step.\n\nThe patient is a 45-year-old male with shortness of breath, productive cough with green sputum, right-sided chest pain worsening with deep breaths, and fever. He is a smoker.\n\nAnalyzing the options:\n\nPneumonia: Symptoms align well with this diagnosis.\n\nAsthma exacerbation: Less likely without wheezing and with productive cough.\n\nChronic bronchitis: Chronic condition, not acute fever and chest pain.\n\nPulmonary embolism: Sudden onset but usually non-productive cough.\n\nLung cancer: Less likely acutely unless causing obstruction.\n\nTuberculosis: Chronic symptoms with night sweats and weight loss.\n\nThe most likely diagnosis is Pneumonia.\n\n```Pneumonia```"
+    ],
+    [
+        "user",
+        "### Patient information\nAge: 30\nSex: F\nDo you have frequent urination?\nY\nDo you have pain during urination?\nY\nDo you have lower abdominal pain?\nY\nDo you have fever?\nN\nDo you have vaginal discharge?\nN\nAre you pregnant?\nN\nDo you have back pain?\nN\nDo you have blood in your urine?\nY\n\n### Options\nUrinary tract infection (cystitis)\nPyelonephritis\nVaginitis\nUrolithiasis (kidney stones)\nInterstitial cystitis\nPelvic inflammatory disease"
+    ],
+    [
+        "assistant",
+        "Let's think step by step.\n\nA 30-year-old female with frequent, painful urination, lower abdominal pain, and blood in urine. No fever, vaginal discharge, or back pain.\n\nAnalyzing the options:\n\nUrinary tract infection (cystitis): Symptoms are consistent.\n\nPyelonephritis: Usually has fever and back pain.\n\nVaginitis: Would have vaginal symptoms.\n\nUrolithiasis: Possible but usually causes severe flank pain.\n\nInterstitial cystitis: Chronic condition without hematuria.\n\nPelvic inflammatory disease: Associated with fever and vaginal discharge.\n\nThe most probable diagnosis is Urinary tract infection (cystitis).\n\n```Urinary tract infection (cystitis)```"
+    ],
+    [
+        "user",
+        "### Patient information\nAge: 50\nSex: M\nDo you have a headache?\nY\nDescribe the headache:\nsudden onset\n\"worst headache of my life\"\nDo you have neck stiffness?\nY\nDo you have nausea or vomiting?\nY\nDo you have fever?\nN\nAny recent head trauma?\nN\nDo you have weakness or numbness?\nN\nDo you have vision changes?\nN\n\n### Options\nMigraine\nTension headache\nSubarachnoid hemorrhage\nMeningitis\nTemporal arteritis\nCluster headache"
+    ],
+    [
+        "assistant",
+        "Let's think step by step.\n\nA 50-year-old male with a sudden severe headache (\"worst headache of my life\"), neck stiffness, and nausea. No fever or neurological deficits.\n\nAnalyzing the options:\n\nMigraine: Typically gradual onset.\n\nTension headache: Mild to moderate, not sudden or severe.\n\nSubarachnoid hemorrhage: Classic presentation fits.\n\nMeningitis: Usually has fever.\n\nTemporal arteritis: Usually in older adults with visual symptoms.\n\nCluster headache: Severe but usually unilateral.\n\nThe most likely diagnosis is Subarachnoid hemorrhage.\n\n```Subarachnoid hemorrhage```"
+    ],
+    [
+        "user",
+        "### Patient information\nAge: 65\nSex: F\nDo you have weight loss?\nY\nDo you have fatigue?\nY\nDo you have jaundice (yellowing of skin/eyes)?\nY\nDo you have abdominal pain?\nY\nWhere is the abdominal pain?\nUpper right quadrant\nDo you have dark urine?\nY\nDo you have light-colored stools?\nY\nDo you drink alcohol?\nN\nDo you have a history of gallstones?\nN\n\n### Options\nPancreatic cancer\nHepatitis\nCholecystitis\nCholangiocarcinoma\nCirrhosis\nGallstones"
+    ],
+    [
+        "assistant",
+        "Let's think step by step.\n\nA 65-year-old female with jaundice, weight loss, fatigue, right upper quadrant pain, dark urine, and light stools. No alcohol use or gallstones.\n\nAnalyzing the options:\n\nPancreatic cancer: Possible, especially if head of pancreas is involved.\n\nHepatitis: Possible but less likely without risk factors.\n\nCholecystitis: Usually doesn't cause jaundice unless bile duct is blocked.\n\nCholangiocarcinoma: Fits symptoms of bile duct cancer.\n\nCirrhosis: Unlikely without alcohol use or hepatitis.\n\nGallstones: No history and less likely to cause these symptoms.\n\nMost probable diagnosis is Cholangiocarcinoma.\n\n```Cholangiocarcinoma```"
+    ],
+    [
+        "user",
+        "### Patient information\nAge: 22\nSex: F\nDo you have fever?\nY\nDo you have a rash?\nY\nDescribe the rash:\nflat red spots\nstarting on face, spreading to body\nDo you have cough?\nY\nDo you have runny nose?\nY\nDo you have red eyes?\nY\nAre you vaccinated?\nN\nHave you traveled recently?\nY (to area with measles outbreak)\n\n### Options\nMeasles (Rubeola)\nRubella\nScarlet fever\nChickenpox\nFifth disease\nRoseola"
+    ],
+    [
+        "assistant",
+        "Let's think step by step.\n\nA 22-year-old unvaccinated female with fever, cough, runny nose, conjunctivitis, and a rash starting on the face and spreading downward after travel to a measles outbreak area.\n\nAnalyzing the options:\n\nMeasles (Rubeola): Symptoms and history match.\n\nRubella: Similar but milder and less likely without vaccination.\n\nScarlet fever: Rash feels like sandpaper.\n\nChickenpox: Vesicular rash.\n\nFifth disease: \"Slapped cheek\" rash.\n\nRoseola: Rash appears after fever breaks.\n\nMost likely diagnosis is Measles (Rubeola).\n\n```Measles (Rubeola)```"
+    ],
+    [
+        "user",
+        "### Patient information\nAge: 28\nSex: M\nDo you have joint pain?\nY\nWhich joints are affected?\nRight knee\nLeft ankle\nDo you have eye redness?\nY\nDo you have painful urination?\nY\nHave you had any recent infections?\nY (Chlamydia infection 2 weeks ago)\nDo you have fever?\nN\nDo you have skin rashes?\nN\n\n### Options\nRheumatoid arthritis\nReactive arthritis (Reiter's syndrome)\nGout\nSeptic arthritis\nAnkylosing spondylitis\nOsteoarthritis"
+    ],
+    [
+        "assistant",
+        "Let's think step by step.\n\nA 28-year-old male with asymmetric joint pain, eye redness, and painful urination following a chlamydia infection.\n\nAnalyzing the options:\n\nRheumatoid arthritis: Symmetric joint involvement.\n\nReactive arthritis (Reiter's syndrome): Triad fits perfectly.\n\nGout: Typically affects the big toe.\n\nSeptic arthritis: Usually affects one joint with fever.\n\nAnkylosing spondylitis: Involves spine.\n\nOsteoarthritis: Degenerative, not inflammatory.\n\nThe most probable diagnosis is Reactive arthritis (Reiter's syndrome).\n\n```Reactive arthritis (Reiter's syndrome)```"
+    ],
+    [
+        "user",
+        "### Patient information\n{evidences}\n\n### Options\n{options}"
+    ]
+]
