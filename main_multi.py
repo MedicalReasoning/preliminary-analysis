@@ -4,6 +4,7 @@ import os
 import argparse
 from multiprocessing import Queue, Process
 from pathlib import Path
+import traceback
 
 from tqdm import tqdm
 from dotenv import load_dotenv # type: ignore
@@ -59,9 +60,9 @@ def run_single_chunk(
             try:
                 output = agent.run(input)
                 result = agent.evaluate(dataset.evaluate_output, label, output)
-            except Exception as e:
+            except:
                 output = {
-                    "error": str(e)
+                    "error": traceback.format_exc()
                 }
                 result = [False] * 4
 

@@ -48,7 +48,7 @@ def create_sr_agent(
             critic_prompts_dir_path=paths[1],
             agg_critic_prompt_path=paths[2],
             refiner_prompt_path=paths[3],
-            add_extractor=create_4o_mini_extractor(paths[3]),
+            add_extractor=create_4o_mini_extractor(paths[4]),
             n_iter=0
         )
 
