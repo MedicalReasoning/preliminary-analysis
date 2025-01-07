@@ -45,7 +45,7 @@ class MultiCriticSelfRefineAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
         self.parser = add_extractor(self.parse)
         self.n_iter = n_iter
 
-    def _run_critic(self, input: _BenchInput, initial_response: str) -> tuple[list[str], str, float, bool]:
+    def _run_critic(self, input: _BenchInput, initial_response: str) -> tuple[list[str], str, float, list[int], bool]:
         responses = []
         scores = []
         total_cost = 0
@@ -71,7 +71,7 @@ class MultiCriticSelfRefineAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
         agg_response = "\n\n".join(responses)
         stop = reduce(lambda a, b: a and b, map(lambda x: x >= 4, scores))
 
-        return responses, agg_response, total_cost, stop
+        return responses, agg_response, total_cost, scores, stop
 
     def run(self, input: _BenchInput) -> dict:
         initial_response, initial_cost = invoke(self.main, input)
@@ -86,12 +86,13 @@ class MultiCriticSelfRefineAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
         prediction = output["initial_prediction"]
         for _ in range(self.n_iter):
             if not stop:
-                critic_responses, critic_response, critic_cost, stop\
+                critic_responses, critic_response, critic_cost, scores, stop\
                     = self._run_critic(input, initial_response)
             else:
                 critic_responses = []
                 critic_response = "-"
                 critic_cost = 0
+                scores = []
 
             if not stop:
                 refiner_response, refiner_cost = invoke(
@@ -102,6 +103,7 @@ class MultiCriticSelfRefineAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
                 output["iteration"].append({ # type: ignore
                     "critic_details": critic_responses,
                     "critic_response": critic_response,
+                    "scores": scores,
                     "refiner_response": refiner_response,
                     "refiner_prediction": refiner_prediction,
                     "critic_cost": critic_cost,
@@ -115,6 +117,7 @@ class MultiCriticSelfRefineAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
                 output["iteration"].append({ # type: ignore
                     "critic_details": critic_responses,
                     "critic_response": critic_response,
+                    "scores": scores,
                     "refiner_response": refiner_response,
                     "refiner_prediction": prediction,
                     "critic_cost": critic_cost,
