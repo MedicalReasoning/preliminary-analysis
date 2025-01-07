@@ -20,11 +20,10 @@ type MultiCriticSelfRefineAgentCreator[_BenchInput, _BenchOutput, _BenchEvalResu
         MultiCriticSelfRefineAgent[_BenchInput, _BenchOutput, _BenchEvalResult]
     ]
 
-def mcsr_prompt_paths(benchmark: str) -> tuple[str, str, str, str, str]:
+def mcsr_prompt_paths(benchmark: str) -> tuple[str, str, str, str]:
     return (
         f"runbox/prompts/{benchmark}/multi_critic_self_refine/main.json",
         f"runbox/prompts/{benchmark}/multi_critic_self_refine/critics",
-        f"runbox/prompts/{benchmark}/multi_critic_self_refine/agg_critic.json",
         f"runbox/prompts/{benchmark}/multi_critic_self_refine/refiner.json",
         f"runbox/prompts/{benchmark}/extractor.json"
     )
@@ -46,10 +45,9 @@ def create_sr_agent(
             refiner_config=refiner_config,
             main_prompt_path=paths[0],
             critic_prompts_dir_path=paths[1],
-            agg_critic_prompt_path=paths[2],
-            refiner_prompt_path=paths[3],
-            add_extractor=create_4o_mini_extractor(paths[4]),
-            n_iter=0
+            refiner_prompt_path=paths[2],
+            add_extractor=create_4o_mini_extractor(paths[3]),
+            n_iter=2
         )
 
     return f
