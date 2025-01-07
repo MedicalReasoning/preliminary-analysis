@@ -1,8 +1,13 @@
 from typing import Callable, TypeVar, Mapping, Any
 import os
 from pathlib import Path
+from statistics import mean
+from functools import reduce
 
+from langchain_core.outputs.chat_generation import ChatGeneration
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
+from langchain_core.runnables import Runnable
 
 from runbox.benchmarks import SupportsBenchmark
 from runbox.utils import ChatOpenAIConfig, load_chat_prompt_template_json, invoke, ExtractorAdder
@@ -14,12 +19,6 @@ _BenchEvalResult = TypeVar("_BenchEvalResult")
 
 type _SelfRefineRowResult = list[_BenchEvalResult]
 
-def _stop(response: str) -> bool:
-    response_ = response.lower()
-    return "`yes`" in response_\
-        or "'yes'" in response_\
-        or '"yes"' in response_
-
 class MultiCriticSelfRefineAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
     SupportsBenchmark[_BenchInput, _BenchOutput, _BenchEvalResult, _SelfRefineRowResult]
 ):
@@ -30,7 +29,6 @@ class MultiCriticSelfRefineAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
         refiner_config: ChatOpenAIConfig,
         main_prompt_path: str,
         critic_prompts_dir_path: str,
-        agg_critic_prompt_path: str,
         refiner_prompt_path: str,
         add_extractor: ExtractorAdder,
         n_iter: int = 3
@@ -42,8 +40,6 @@ class MultiCriticSelfRefineAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
                 | ChatOpenAI(**critic_config)
             for prompt_path in os.listdir(critic_prompts_dir_path)
         ]
-        self.agg_critic = load_chat_prompt_template_json(agg_critic_prompt_path)\
-            | ChatOpenAI(**critic_config)
         self.refiner = load_chat_prompt_template_json(refiner_prompt_path)\
             | ChatOpenAI(**refiner_config)
         self.parser = add_extractor(self.parse)
@@ -51,6 +47,7 @@ class MultiCriticSelfRefineAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
 
     def _run_critic(self, input: _BenchInput, initial_response: str) -> tuple[list[str], str, float, bool]:
         responses = []
+        scores = []
         total_cost = 0
 
         for critic in self.critics:
@@ -58,19 +55,20 @@ class MultiCriticSelfRefineAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
                 critic,
                 { **input, "initial_response": initial_response } # type: ignore
             )
-            responses.append(critic_response)
+
+            feedback = "\n".join(filter(
+                lambda x: '- GOOD:' in x or '- BAD:' in x,
+                critic_response.splitlines()
+            ))
+            responses.append(feedback)
+
+            score = int(s := self.parser(critic_response)) if s is not None else 0
+            scores.append(score)
+
             total_cost += critic_cost
 
-        agg_response, agg_cost = invoke(
-            self.agg_critic,
-            {
-                **input,
-                "initial_response": initial_response,
-                **{ f"critic_{i}": res for i, res in enumerate(responses) }
-            }
-        )
-        total_cost += agg_cost
-        stop = _stop(agg_response)
+        agg_response = "\n\n".join(responses)
+        stop = reduce(lambda a, b: a and b, map(lambda x: x >= 4, scores))
 
         return responses, agg_response, total_cost, stop
 
