@@ -51,7 +51,7 @@ def create_agent(
             agg_critic_prompt_path=paths[2],
             refiner_prompt_path=paths[3],
             add_extractor=create_4o_mini_extractor(paths[4]),
-            n_iter=1
+            n_iter=2
         )
 
     return f

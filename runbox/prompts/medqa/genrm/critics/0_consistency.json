@@ -5,6 +5,6 @@
     ],
     [
         "user",
-        "## INPUT\n### Patient information\n{evidences}\n\n### Options\n{options}\n\n## RESPONSE\n{initial_response}"
+        "## INPUT\n### Question\n{question}\n\n### Options\n{options}\n\n## CURRENT_RESPONSE\n{initial_response}"
     ]
 ]

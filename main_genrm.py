@@ -39,7 +39,7 @@ def generate_chunks(slice: tuple[int, int], n_process: int) -> list[tuple[int, i
     return chunks
 
 def buffer_chunk_path(config: RunConfig, chunk: tuple[int, int]) -> Path:
-    return BUFFER_PATH / Path(f"multicritic-{config['benchmark']}-{'-'.join(config['models'])}-{chunk}.json")
+    return BUFFER_PATH / Path(f"genrm-{config['benchmark']}-{'-'.join(config['models'])}-{chunk}.json")
 
 def run_single_chunk(
     queue: Queue,
@@ -60,6 +60,8 @@ def run_single_chunk(
             try:
                 output = agent.run(input)
                 result = agent.evaluate(dataset.evaluate_output, label, output)
+            except KeyboardInterrupt:
+                break
             except:
                 output = {
                     "error": traceback.format_exc()
@@ -89,7 +91,7 @@ def save_path(
     config: RunConfig,
     result_dir_path: Path
 ) -> Path:
-    file_name = f"multicritic-{config['benchmark']}-{'-'.join(config['models'])}.json"
+    file_name = f"genrm-{config['benchmark']}-{'-'.join(config['models'])}.json"
     file_path = result_dir_path / Path(file_name)
     return file_path
 

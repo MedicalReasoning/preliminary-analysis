@@ -88,11 +88,11 @@ def _run_single_critic(
         "feedback": "\n".join(feedback_lines)
     }).content # type: ignore
 
-    negs = [*filter( # type: ignore
+    negs = [*filter(
         lambda x: x is not None,
         [*map(_calculate_neg, responses.generations)]
     )]
-    neg = mean(negs) if len(negs) > 0 else 0
+    neg = mean(negs) if len(negs) > 0 else 0 # type: ignore
 
     return feedback, neg
 
@@ -111,10 +111,10 @@ class GenRMAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
         agg_critic_prompt_path: str,
         refiner_prompt_path: str,
         add_extractor: ExtractorAdder,
-        n_iter: int = 2,
+        n_iter: int = 3,
         critic_n: int = 1,
         critic_temp: float = 1.,
-        critic_top_logprobs: int = 5
+        critic_top_logprobs: int = 20
     ) -> None:
         self.main = load_chat_prompt_template_json(main_prompt_path)\
             | ChatOpenAI(**main_config)
@@ -156,7 +156,7 @@ class GenRMAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
 
         agg_response = "\n\n".join(responses)
 
-        stop = reduce(lambda a, b: a and b, map(lambda x: x > 0.8, neg_scores))
+        stop = reduce(lambda a, b: a and b, map(lambda x: x >= 0.5, neg_scores))
 
         return responses, agg_response, total_cost, neg_scores, stop
 
