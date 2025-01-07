@@ -62,7 +62,8 @@ class MultiCriticSelfRefineAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
             ))
             responses.append(feedback)
 
-            score = int(s := self.parser(critic_response)) if s is not None else 0
+            s = self.parser(critic_response)
+            score = int(s) if s is not None else 0
             scores.append(score)
 
             total_cost += critic_cost
