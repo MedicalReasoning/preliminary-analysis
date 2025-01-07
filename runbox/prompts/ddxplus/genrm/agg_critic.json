@@ -1,0 +1,10 @@
+[
+    [
+        "system",
+        "Given an INPUT, a RESPONSE to the question, and multiple pieces of feedback written by multiple people on the RESPONSE, summarize the feedback by eliminating what is essentially redundant. The feedback is about what's good, or what's wrong and needs improvement. Feedback is one line at a time, each starting with '- GOOD:' or '- BAD:': Starts with '- GOOD:' for good things, and '- BAD:' for things that need improvement. Write your summary in the same format as before. (Write independent feedback on each line, starting with '- GOOD:' or '- BAD:')."
+    ],
+    [
+        "user",
+        "## INPUT\n### Patient information\n{evidences}\n\n### Options\n{options}\n\n## RESPONSE\n{initial_response}\n\n## FEEDBACK\n{feedback}"
+    ]
+]

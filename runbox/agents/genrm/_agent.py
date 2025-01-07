@@ -7,6 +7,7 @@ from functools import reduce
 from langchain_core.outputs.chat_generation import ChatGeneration
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
+from langchain_core.runnables import Runnable
 import numpy as np
 
 from runbox.benchmarks import SupportsBenchmark
@@ -20,12 +21,13 @@ _BenchEvalResult = TypeVar("_BenchEvalResult")
 type _GenRMRowResult = list[_BenchEvalResult]
 
 
+INF = float('-inf')
 def _calulate_prob(top_logprobs: list[dict]) -> tuple[float, float]:
     positive_tokens = ['Yes', 'YES', 'yes']
     negative_tokens = ['No', 'NO', 'no']
 
-    positive_logprob = float("-inf")
-    negative_logprob = float("-inf")
+    positive_logprob = INF
+    negative_logprob = INF
 
     for item in top_logprobs:
         token = item['token']
@@ -35,11 +37,11 @@ def _calulate_prob(top_logprobs: list[dict]) -> tuple[float, float]:
         elif token in negative_tokens:
             negative_logprob = np.logaddexp(negative_logprob, logprob)
 
-    if (positive_logprob == float("-inf")) and (negative_logprob == float("-inf")):
+    if (positive_logprob == INF) and (negative_logprob == INF):
         return 0.5, 0.5
-    if positive_logprob == float("-inf"):
+    if positive_logprob == INF:
         return 0.0, 1.0
-    if negative_logprob == float("-inf"):
+    if negative_logprob == INF:
         return 1.0, 0.0
     logits = np.array([positive_logprob, negative_logprob])
     probs = np.exp(logits) / np.sum(np.exp(logits))
@@ -65,19 +67,34 @@ def _calculate_neg(response: ChatGeneration) -> float | None:
     return None
 
 @track_cost
-def _run_single_critic(model: ChatOpenAI, prompt: ChatPromptTemplate, params: dict) -> tuple[list[str], float]:
+def _run_single_critic(
+    model: ChatOpenAI,
+    prompt: ChatPromptTemplate,
+    params: dict,
+    aggregator: Runnable
+) -> tuple[str, float]:
     input = prompt.invoke(params)
     responses = model._generate(input) # type: ignore
 
-    feedbacks = [gen.text for gen in responses.generations]
-    neg = mean(
-        filter( # type: ignore
-            lambda x: x is not None,
-            map(_calculate_neg, responses.generations)
-        )
+    feedback_lines = sum(
+        [[*filter(
+            lambda x: '- GOOD:' in x or '- BAD:' in x,
+            gen.text.splitlines()
+        )] for gen in responses.generations],
+        []
     )
+    feedback = aggregator.invoke({
+        **params,
+        "feedback": "\n".join(feedback_lines)
+    }).content # type: ignore
 
-    return feedbacks, neg
+    negs = [*filter( # type: ignore
+        lambda x: x is not None,
+        [*map(_calculate_neg, responses.generations)]
+    )]
+    neg = mean(negs) if len(negs) > 0 else 0
+
+    return feedback, neg
 
 
 class GenRMAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
@@ -87,16 +104,17 @@ class GenRMAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
         self,
         main_config: ChatOpenAIConfig,
         critic_config: ChatOpenAIConfig,
+        agg_critic_config: ChatOpenAIConfig,
         refiner_config: ChatOpenAIConfig,
         main_prompt_path: str,
         critic_prompts_dir_path: str,
         agg_critic_prompt_path: str,
         refiner_prompt_path: str,
         add_extractor: ExtractorAdder,
-        n_iter: int = 3,
-        critic_n: int = 3,
+        n_iter: int = 2,
+        critic_n: int = 1,
         critic_temp: float = 1.,
-        critic_top_logprobs: int = 10
+        critic_top_logprobs: int = 5
     ) -> None:
         self.main = load_chat_prompt_template_json(main_prompt_path)\
             | ChatOpenAI(**main_config)
@@ -112,13 +130,13 @@ class GenRMAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
             for prompt_path in os.listdir(critic_prompts_dir_path)
         ]
         self.agg_critic = load_chat_prompt_template_json(agg_critic_prompt_path)\
-            | ChatOpenAI(**critic_config)
+            | ChatOpenAI(**agg_critic_config)
         self.refiner = load_chat_prompt_template_json(refiner_prompt_path)\
             | ChatOpenAI(**refiner_config)
         self.parser = add_extractor(self.parse)
         self.n_iter = n_iter
 
-    def _run_critic(self, input: _BenchInput, initial_response: str) -> tuple[list[str], str, float, bool]:
+    def _run_critic(self, input: _BenchInput, initial_response: str) -> tuple[list[str], str, float, list[float], bool]:
         responses: list[str] = []
         neg_scores: list[float] = []
         total_cost = 0
@@ -127,26 +145,20 @@ class GenRMAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
             response, critic_cost = _run_single_critic(
                 self.critic,
                 critic_prompt,
-                { **input, "initial_response": initial_response }
+                { **input, "initial_response": initial_response },
+                self.agg_critic
             )
-            feedbacks, neg_score = response
+            feedback, neg_score = response
 
-            responses.append("\n".join(feedbacks))
+            responses.append(feedback)
             neg_scores.append(neg_score)
             total_cost += critic_cost
 
-        agg_response, agg_cost = invoke(
-            self.agg_critic,
-            {
-                **input,
-                "initial_response": initial_response,
-                **{ f"critic_{i}": res for i, res in enumerate(responses) }
-            }
-        )
-        total_cost += agg_cost
-        stop = reduce(lambda a, b: a and b, map(lambda x: x < 0.1, neg_scores))
+        agg_response = "\n\n".join(responses)
 
-        return responses, agg_response, total_cost, stop
+        stop = reduce(lambda a, b: a and b, map(lambda x: x > 0.8, neg_scores))
+
+        return responses, agg_response, total_cost, neg_scores, stop
 
     def run(self, input: _BenchInput) -> dict:
         initial_response, initial_cost = invoke(self.main, input)
@@ -161,12 +173,13 @@ class GenRMAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
         prediction = output["initial_prediction"]
         for _ in range(self.n_iter):
             if not stop:
-                critic_responses, critic_response, critic_cost, stop\
+                critic_responses, critic_response, critic_cost, neg_scores, stop\
                     = self._run_critic(input, initial_response)
             else:
                 critic_responses = []
                 critic_response = "-"
                 critic_cost = 0
+                neg_scores = []
 
             if not stop:
                 refiner_response, refiner_cost = invoke(
@@ -176,7 +189,8 @@ class GenRMAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
                 refiner_prediction = self.parser(refiner_response)
                 output["iteration"].append({ # type: ignore
                     "critic_details": critic_responses,
-                    "critic_response": critic_response,
+                    # "critic_response": critic_response,
+                    "neg_scores": neg_scores,
                     "refiner_response": refiner_response,
                     "refiner_prediction": refiner_prediction,
                     "critic_cost": critic_cost,
@@ -189,7 +203,8 @@ class GenRMAgent[_BenchInput, _BenchOutput, _BenchEvalResult](
                 refiner_cost = 0
                 output["iteration"].append({ # type: ignore
                     "critic_details": critic_responses,
-                    "critic_response": critic_response,
+                    # "critic_response": critic_response,
+                    "neg_scores": neg_scores,
                     "refiner_response": refiner_response,
                     "refiner_prediction": prediction,
                     "critic_cost": critic_cost,
