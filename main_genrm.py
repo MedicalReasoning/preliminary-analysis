@@ -60,8 +60,6 @@ def run_single_chunk(
             try:
                 output = agent.run(input)
                 result = agent.evaluate(dataset.evaluate_output, label, output)
-            except KeyboardInterrupt:
-                break
             except:
                 output = {
                     "error": traceback.format_exc()
@@ -116,7 +114,6 @@ def run_single_config(
     queue.cancel_join_thread()
 
     for chunk in chunks:
-        run_single_chunk(queue, config, chunk)
         p = Process(target=run_single_chunk, args=(queue, config, chunk))
         p.start()
 
